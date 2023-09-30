@@ -34,14 +34,14 @@ class State(rx.State):
 
     async def send_message(self) -> None:
         """Broadcast chat message to other connected clients."""
-        m = Message(nick=self.nick, sent=time.time(), message=self.in_message)
+        m = Message(nick=self.nick.title(), sent=time.time(), message=self.in_message)
         await broadcast_event("state.incoming_message", payload=dict(message=m))
         self.in_message = ""
 
     @rx.var
     def other_nicks(self) -> t.List[str]:
         """Filter nicks list to exclude nick from this instance."""
-        return [n for n in self.nicks if n != self.nick]
+        return [n.title() for n in self.nicks if n != self.nick]
 
 
 def index() -> rx.Component:
